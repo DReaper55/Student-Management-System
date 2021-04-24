@@ -1,15 +1,11 @@
 package sample.scenes;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.StringLengthValidator;
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,8 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.database.MongoDB;
@@ -201,11 +195,7 @@ public class CreateNewRecord extends Application {
         firstNameInput.setMinSize(300, 40);
         firstNameInput.setFont(Font.font(15.0));
         firstNameInput.setPromptText("Enter first name...");
-//        firstNameInput.setStyle(
-//                "-fx-text-box-border: black;"
-//                        + "-fx-prompt-text-fill: black"
-//
-//        );
+
 
         Label fNameLabel = new Label("First Name: ");
         fNameLabel.setFont(Font.font(18.0));
@@ -246,10 +236,6 @@ public class CreateNewRecord extends Application {
         surnameInput.setMinSize(300, 40);
         surnameInput.setFont(Font.font(15.0));
         surnameInput.setPromptText("Enter last name...");
-//        surnameInput.setStyle(
-//                "-fx-text-box-border: black;"
-//                        + "-fx-prompt-text-fill: black"
-//        );
 
         Label lNameLabel = new Label("Last Name: ");
         lNameLabel.setFont(Font.font(18.0));
@@ -287,11 +273,6 @@ public class CreateNewRecord extends Application {
         matricNumberInput.setMinSize(300, 40);
         matricNumberInput.setFont(Font.font(15.0));
         matricNumberInput.setPromptText("Don't add the '/'");
-//        matricNumberInput.setStyle(
-//                "-fx-text-box-border: black;"
-//                        + "-fx-prompt-text-fill: black"
-//
-//        );
 
         Label matricLabel = new Label("Matric Number: ");
         matricLabel.setFont(Font.font(18.0));
@@ -325,10 +306,6 @@ public class CreateNewRecord extends Application {
         departmentInput.setMinSize(300, 40);
         departmentInput.setFont(Font.font(15.0));
         departmentInput.setPromptText("Enter department...");
-//        departmentInput.setStyle(
-//                "-fx-text-box-border: black;"
-//                        + "-fx-prompt-text-fill: black"
-//        );
 
         Label departmentLabel = new Label("Department: ");
         departmentLabel.setFont(Font.font(18.0));
@@ -392,6 +369,14 @@ public class CreateNewRecord extends Application {
             matricNumberInput.setText(studentToBeUpdated.getMatricNumber());
             departmentInput.setText(studentToBeUpdated.getDepartment());
             dobPicker.getEditor().setText(studentToBeUpdated.getDateOfBirth());
+
+            if(studentToBeUpdated.getGender().equals("Male")){
+                maleGender.setSelected(true);
+                student.setGender(studentToBeUpdated.getGender());
+            } else {
+                femaleGender.setSelected(true);
+                student.setGender(studentToBeUpdated.getGender());
+            }
 
             student.setFirstName(studentToBeUpdated.getFirstName());
             student.setLastName(studentToBeUpdated.getLastName());
