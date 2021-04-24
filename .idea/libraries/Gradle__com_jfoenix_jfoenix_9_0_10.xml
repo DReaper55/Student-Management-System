@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jfoenix:jfoenix:9.0.10">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jfoenix-9.0.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jfoenix-9.0.10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
