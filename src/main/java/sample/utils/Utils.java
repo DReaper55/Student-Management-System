@@ -3,6 +3,7 @@ package sample.utils;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import javafx.beans.value.ObservableValueBase;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.Background;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sample.database.MongoDB;
 import sample.models.Student;
-import sample.scenes.CreateNewRecord;
+import sample.scenes.CreateUpdateRecord;
 import sample.scenes.ViewRecords;
 
 import java.util.ArrayList;
@@ -28,11 +29,11 @@ public class Utils {
         studentTable.setShowRoot(false);
 
 //        Create table and columns
-        JFXTreeTableColumn<Student, String> firstNameColumn = new JFXTreeTableColumn<>("First Name");
-        firstNameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("firstName"));
+        JFXTreeTableColumn<Student, String> fullNameColumn = new JFXTreeTableColumn<>("Full Name");
+        fullNameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("fullName"));
 
-        JFXTreeTableColumn<Student, String> lastNameColumn = new JFXTreeTableColumn<>("Last Name");
-        lastNameColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("lastName"));
+        JFXTreeTableColumn<Student, String> facultyColumn = new JFXTreeTableColumn<>("Faculty");
+        facultyColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("faculty"));
 
         JFXTreeTableColumn<Student, String> matricNumColumn = new JFXTreeTableColumn<>("Matric Number");
         matricNumColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("matricNumber"));
@@ -46,6 +47,14 @@ public class Utils {
         JFXTreeTableColumn<Student, String> dateOfBirthColumn = new JFXTreeTableColumn<>("Date Of Birth");
         dateOfBirthColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("dateOfBirth"));
 
+        JFXTreeTableColumn<Student, String> isGottenIDCardColumn = new JFXTreeTableColumn<>("IsGottenIDCard");
+        isGottenIDCardColumn.setCellValueFactory(value -> new ObservableValueBase<String>() {
+            @Override
+            public String getValue() {
+                return value.getValue().getValue().isGottenIDCard();
+            }
+        });
+
         JFXTreeTableColumn<Student, String> editButtonColumn = new JFXTreeTableColumn<>("Actions");
         editButtonColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("edit"));
 
@@ -56,8 +65,8 @@ public class Utils {
         viewButtonColumn.setCellValueFactory(new TreeItemPropertyValueFactory<>("view"));
 
         studentTable.getColumns().addAll(
-                firstNameColumn, lastNameColumn, matricNumColumn,
-                departmentColumn, genderColumn, dateOfBirthColumn,
+                fullNameColumn, matricNumColumn, facultyColumn,
+                departmentColumn, genderColumn, dateOfBirthColumn, isGottenIDCardColumn,
                 editButtonColumn, viewButtonColumn, deleteButtonColumn
         );
 
@@ -85,7 +94,7 @@ public class Utils {
             editBtn.setMinSize(50.0, 30.0);
 
             // edit button action to go to createNewRecord stage
-            editBtn.setOnAction(actionEvent -> new CreateNewRecord(student.getMatricNumber()).start(new Stage(StageStyle.DECORATED)));
+            editBtn.setOnAction(actionEvent -> new CreateUpdateRecord(student.getMatricNumber()).start(new Stage(StageStyle.DECORATED)));
             student.setEdit(editBtn);
 //
 //      ....................View Button......................

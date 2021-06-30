@@ -10,12 +10,13 @@ public class MongoDB {
     private static DBCollection studentsCollection;
 
     private static final String MATRIC = "Matric";
-    private static final String FIRSTNAME = "FirstName";
-    private static final String LASTNAME = "LastName";
+    private static final String FULLNAME = "Fullname";
+    private static final String FACULTY = "Faculty";
     private static final String DEPARTMENT = "Department";
     private static final String GENDER = "Gender";
     private static final String DATEOFBIRTH = "DateOfBirth";
     private static final String DISPLAYPICTURE = "DisplayPicture";
+    private static final String ISGOTTENIDCARD = "IsGottenIDCard";
 
     //    initialize mongo db
     private static void initialize() {
@@ -87,24 +88,25 @@ public class MongoDB {
     private static DBObject convertToDBObject(Student student) {
         return new BasicDBObject(
                 "Matric", student.getMatricNumber()
-        ).append("FirstName", student.getFirstName())
-                .append("LastName", student.getLastName())
+        ).append("Fullname", student.getFullName())
+                .append("Faculty", student.getFaculty())
                 .append("Department", student.getDepartment())
                 .append("Gender", student.getGender())
                 .append("DateOfBirth", student.getDateOfBirth())
-                .append("DisplayPicture", student.getDisplayPic());
+                .append("DisplayPicture", student.getDisplayPic())
+                .append("IsGottenIDCard", student.isGottenIDCard());
     }
 
     //    to convert db object back to student object
     private static Student convertToStudent(DBObject dbObject) {
         return new Student(
-                dbObject.get(FIRSTNAME).toString(),
-                dbObject.get(LASTNAME).toString(),
+                dbObject.get(FULLNAME).toString(),
+                dbObject.get(FACULTY).toString(),
                 dbObject.get(DEPARTMENT).toString(),
                 dbObject.get(MATRIC).toString(),
                 dbObject.get(GENDER).toString(),
                 dbObject.get(DATEOFBIRTH).toString(),
-                dbObject.get(DISPLAYPICTURE).toString()
-        );
+                dbObject.get(DISPLAYPICTURE).toString(),
+                dbObject.get(ISGOTTENIDCARD).toString());
     }
 }

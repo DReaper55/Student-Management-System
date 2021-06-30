@@ -3,21 +3,23 @@ package sample.models;
 import javafx.scene.control.Button;
 
 public class Student {
-    private String firstName, lastName, department, matricNumber, gender, dateOfBirth, displayPic;
+    private String fullName, faculty, department, matricNumber, gender, dateOfBirth, displayPic, isGottenIDCard;
     private int id;
+
     private Button edit, delete, view;
 
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String department, String matricNumber, String gender, String dateOfBirth, String displayPic) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Student(String fullName, String faculty, String department, String matricNumber, String gender, String dateOfBirth, String displayPic, String isGottenIDCard) {
+        this.fullName = fullName;
+        this.faculty = faculty;
         this.department = department;
         this.matricNumber = matricNumber;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.displayPic = displayPic;
+        this.isGottenIDCard = isGottenIDCard;
     }
 
     public Button getEdit() {
@@ -52,20 +54,20 @@ public class Student {
         this.displayPic = displayPic;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFaculty() {
+        return faculty;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
     }
 
     public String getDepartment() {
@@ -108,9 +110,17 @@ public class Student {
         this.id = id;
     }
 
+    public String isGottenIDCard() {
+        return isGottenIDCard;
+    }
+
+    public void setGottenIDCard(String gottenIDCard) {
+        isGottenIDCard = gottenIDCard;
+    }
+
     @Override
     public String toString() {
-        return getFirstName() + "\n" + getLastName() + "\n" +
+        return getFullName() + "\n" + getFaculty() + "\n" +
                 getDepartment() + "\n" + getMatricNumber() + "\n" +
                 getDateOfBirth() + "\n" +
                 getGender() + "\n" + getDisplayPic() + "\n";

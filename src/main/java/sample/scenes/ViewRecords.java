@@ -1,10 +1,8 @@
 package sample.scenes;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.print.PrinterJob;
 import javafx.scene.control.TextField;
-import com.jfoenix.validation.RegexValidator;
-import com.jfoenix.validation.RequiredFieldValidator;
-import com.jfoenix.validation.StringLengthValidator;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,17 +13,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.database.MongoDB;
 import sample.models.Student;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ViewRecords extends Application {
@@ -56,13 +49,17 @@ public class ViewRecords extends Application {
         previousBtn.setMinSize(150.0, 50.0);
         previousBtn.setFont(Font.font(18.0));
 
+        JFXButton generateBtn = new JFXButton("Generate");
+        generateBtn.setBackground(new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(5.0), null)));
+        generateBtn.setMinSize(150.0, 50.0);
+        generateBtn.setFont(Font.font(18.0));
 
         JFXButton nextBtn = new JFXButton("Next ->");
         nextBtn.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, new CornerRadii(5.0), null)));
         nextBtn.setMinSize(150.0, 50.0);
         nextBtn.setFont(Font.font(18.0));
 
-        HBox buttonsLayout = new HBox(previousBtn, nextBtn);
+        HBox buttonsLayout = new HBox(previousBtn, nextBtn, generateBtn);
         buttonsLayout.setAlignment(Pos.BASELINE_CENTER);
         buttonsLayout.setSpacing(30.0);
 
@@ -127,6 +124,8 @@ public class ViewRecords extends Application {
                         finalI[0]++;
                     }
                 });
+
+                generateBtn.setOnAction(actionEvent -> new GenerateIDCard(currentStudentRecord.getMatricNumber()).start(new Stage()));
             }
         }
 
@@ -185,44 +184,25 @@ public class ViewRecords extends Application {
         gridPane.setHgap(10.0);
 
 //
-//  ................First Name...................
+//  ................Full Name...................
 //
-        TextField firstNameInput = new TextField();
+        TextField fullNameInput = new TextField();
 
-        firstNameInput.setMinSize(300, 40);
-        firstNameInput.setFont(Font.font(15.0));
-        firstNameInput.setDisable(true);
+        fullNameInput.setMinSize(300, 40);
+        fullNameInput.setFont(Font.font(15.0));
+        fullNameInput.setDisable(true);
 
-        firstNameInput.setStyle(
+        fullNameInput.setStyle(
                 "-fx-text-box-border: black;"
                         + "-fx-prompt-text-fill: black"
 
         );
 
-        Label fNameLabel = new Label("First Name: ");
+        Label fNameLabel = new Label("Full Name: ");
         fNameLabel.setFont(Font.font(18.0));
-        fNameLabel.setLabelFor(firstNameInput);
+        fNameLabel.setLabelFor(fullNameInput);
 
-        firstNameInput.setText(student.getFirstName());
-
-//
-//  ................Surname...................
-//
-        TextField surnameInput = new TextField();
-        surnameInput.setMinSize(300, 40);
-        surnameInput.setFont(Font.font(15.0));
-        surnameInput.setDisable(true);
-
-        surnameInput.setStyle(
-                "-fx-text-box-border: black;"
-                        + "-fx-prompt-text-fill: black"
-        );
-
-        Label lNameLabel = new Label("Last Name: ");
-        lNameLabel.setFont(Font.font(18.0));
-        lNameLabel.setLabelFor(surnameInput);
-
-        surnameInput.setText(student.getLastName());
+        fullNameInput.setText(student.getFullName());
 
 //
 //  ................Matric Number...................
@@ -244,6 +224,24 @@ public class ViewRecords extends Application {
 
         matricNumberInput.setText(student.getMatricNumber());
 
+//
+//  ................Faculty...................
+//
+        TextField facultyInput = new TextField();
+        facultyInput.setMinSize(300, 40);
+        facultyInput.setFont(Font.font(15.0));
+        facultyInput.setDisable(true);
+
+        facultyInput.setStyle(
+                "-fx-text-box-border: black;"
+                        + "-fx-prompt-text-fill: black"
+        );
+
+        Label facultyLabel = new Label("Faculty: ");
+        facultyLabel.setFont(Font.font(18.0));
+        facultyLabel.setLabelFor(facultyInput);
+
+        facultyInput.setText(student.getFaculty());
 //
 //  ................Department...................
 //
@@ -304,9 +302,9 @@ public class ViewRecords extends Application {
 //
 //  ...............Arrange the layouts in rows...................
 //
-        gridPane.addRow(0, fNameLabel, firstNameInput);
-        gridPane.addRow(1, lNameLabel, surnameInput);
-        gridPane.addRow(2, matricLabel, matricNumberInput);
+        gridPane.addRow(0, fNameLabel, fullNameInput);
+        gridPane.addRow(1, matricLabel, matricNumberInput);
+        gridPane.addRow(2, facultyLabel, facultyInput);
         gridPane.addRow(3, departmentLabel, departmentInput);
         gridPane.addRow(4, genderLabel, genderInput);
         gridPane.addRow(5, dateOfBirthLabel, dateOfBirthInput);

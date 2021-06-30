@@ -6,8 +6,6 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -29,7 +27,7 @@ public class HomeScene extends Application {
         rootLayout.setAlignment(Pos.TOP_CENTER);
 
 //        Title of page
-        Text pageTitle = new Text("Students Record");
+        Text pageTitle = new Text("Student ID Card Management System");
         pageTitle.setFont(Font.font(50.0));
         pageTitle.setStyle("-fx-text-style: bold;");
 
@@ -71,7 +69,7 @@ public class HomeScene extends Application {
         enterNewRecord.setFont(Font.font(30.0));
         enterNewRecord.setMinHeight(50.0);
         enterNewRecord.setMinWidth(150.0);
-        enterNewRecord.setOnAction(actionEvent -> new CreateNewRecord().start(new Stage(StageStyle.UNIFIED)));
+        enterNewRecord.setOnAction(actionEvent -> new CreateUpdateRecord().start(new Stage(StageStyle.UNIFIED)));
 
         JFXButton searchRecords = new JFXButton("Search");
         searchRecords.setBackground(new Background(new BackgroundFill(Color.AQUA, new CornerRadii(5.0), null)));

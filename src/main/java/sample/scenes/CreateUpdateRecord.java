@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class CreateNewRecord extends Application {
+public class CreateUpdateRecord extends Application {
     private Student student = new Student();
 
     private String matricNumber;
@@ -35,13 +35,13 @@ public class CreateNewRecord extends Application {
 
     private Stage mPrimaryStage;
 
-    CreateNewRecord() {
+    CreateUpdateRecord() {
 
     }
 
     //    to assert that button clicked is to edit existing record
 //    not to add new record
-    public CreateNewRecord(String matricNumber) {
+    public CreateUpdateRecord(String matricNumber) {
         this.matricNumber = matricNumber;
     }
 
@@ -98,16 +98,22 @@ public class CreateNewRecord extends Application {
 //        or insert new one to the database
         if (
             // Basic validation to make sure entries are not empty
-                student.getMatricNumber() != null && student.getFirstName() != null &&
-                        student.getLastName() != null && student.getGender() != null &&
+                student.getMatricNumber() != null && student.getFullName() != null &&
+                        student.getFaculty() != null && student.getGender() != null &&
                         student.getDateOfBirth() != null && student.getDisplayPic() != null &&
                         student.getDepartment() != null
 
         ) {
             if (studentToBeUpdated == null) {
+                student.setGottenIDCard("False");
                 mongoDB.insert(student);
                 mPrimaryStage.close();
             } else {
+                if(studentToBeUpdated.isGottenIDCard().equals("True")){
+                    student.setGottenIDCard("True");
+                } else {
+                    student.setGottenIDCard("False");
+                }
                 mongoDB.updateStudent(student, matricNumber);
                 mPrimaryStage.close();
             }
@@ -187,84 +193,48 @@ public class CreateNewRecord extends Application {
         gridPane.setHgap(10.0);
 
 //
-//  ................First Name...................
+//  ................Full Name...................
 //
-        JFXTextField firstNameInput = new JFXTextField();
+        JFXTextField fullNameInput = new JFXTextField();
 
-        firstNameInput.setLabelFloat(false);
-        firstNameInput.setMinSize(300, 40);
-        firstNameInput.setFont(Font.font(15.0));
-        firstNameInput.setPromptText("Enter first name...");
+        fullNameInput.setLabelFloat(false);
+        fullNameInput.setMinSize(300, 40);
+        fullNameInput.setFont(Font.font(15.0));
+        fullNameInput.setPromptText("Enter full name...");
 
 
-        Label fNameLabel = new Label("First Name: ");
+        Label fNameLabel = new Label("Full Name: ");
         fNameLabel.setFont(Font.font(18.0));
-        fNameLabel.setLabelFor(firstNameInput);
+        fNameLabel.setLabelFor(fullNameInput);
 
 
 //
 //  ....................Validators.........................
 //
         RegexValidator validFirstName = new RegexValidator(); // to match special characters and numbers
-        validFirstName.setRegexPattern("^[_A-Za-z-+]+([_A-Za-z-]+)");
+        validFirstName.setRegexPattern("^[_A-Za-z- +]+([_A-Za-z- ]+)");
         validFirstName.setMessage("Numbers and special characters not allowed");
 
-        firstNameInput.setValidators(
+        fullNameInput.setValidators(
                 new RequiredFieldValidator("No Input Given"), // when nothing is input
                 validFirstName
         );
 
-        firstNameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        fullNameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                firstNameInput.validate();
+                fullNameInput.validate();
             }
         });
 
 
 //        To get the text_field input event and validate
-        firstNameInput.setOnKeyReleased(keyEvent -> {
-            if (firstNameInput.validate()){
-                student.setFirstName(firstNameInput.getText());
+        fullNameInput.setOnKeyReleased(keyEvent -> {
+            if (fullNameInput.validate()) {
+                student.setFullName(fullNameInput.getText());
             }
 
         });
-//
-//  ................Surname...................
-//
-        JFXTextField surnameInput = new JFXTextField();
-        surnameInput.setLabelFloat(false);
-        surnameInput.setMinSize(300, 40);
-        surnameInput.setFont(Font.font(15.0));
-        surnameInput.setPromptText("Enter last name...");
 
-        Label lNameLabel = new Label("Last Name: ");
-        lNameLabel.setFont(Font.font(18.0));
-        lNameLabel.setLabelFor(surnameInput);
-
-//
-//  ....................Validators.........................
-//
-        RegexValidator validSurname = new RegexValidator(); // to match special characters and numbers
-        validSurname.setRegexPattern("^[_A-Za-z-+]+([_A-Za-z-]+)");
-        validSurname.setMessage("Numbers and special characters not allowed");
-
-        surnameInput.setValidators(
-                new RequiredFieldValidator("No Input Given"), // when nothing is input
-                validSurname
-        );
-
-        surnameInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue) {
-                surnameInput.validate();
-            }
-        });
-
-
-//        To get the text_field input event and validate
-        surnameInput.setOnKeyReleased(keyEvent -> {
-            if (surnameInput.validate())
-                student.setLastName(surnameInput.getText());
-        });
 //
 //  ................Matric Number...................
 //
@@ -272,7 +242,7 @@ public class CreateNewRecord extends Application {
         matricNumberInput.setLabelFloat(false);
         matricNumberInput.setMinSize(300, 40);
         matricNumberInput.setFont(Font.font(15.0));
-        matricNumberInput.setPromptText("Don't add the '/'");
+        matricNumberInput.setPromptText("Enter Matric Number");
 
         Label matricLabel = new Label("Matric Number: ");
         matricLabel.setFont(Font.font(18.0));
@@ -282,13 +252,13 @@ public class CreateNewRecord extends Application {
 //        ................Validator....................
 //
         RegexValidator validMatric = new RegexValidator(); // to match special characters and numbers
-        validMatric.setRegexPattern("^[_0-9-+]+([_0-9-]+)");
-        validMatric.setMessage("Letters and special characters not allowed");
+        validMatric.setRegexPattern("^[_0-9-+]+[_0-9-+]+/+([_0-9-]+)");
+        validMatric.setMessage("Format: 12/345678900");
 
 
         matricNumberInput.setValidators(
                 new RequiredFieldValidator("No Input Given"),
-                new StringLengthValidator(11, "Value must not be more than "),
+                new StringLengthValidator(12, "Value must not be more than "),
                 validMatric
         );
 
@@ -297,6 +267,43 @@ public class CreateNewRecord extends Application {
                         student.setMatricNumber(matricNumberInput.getText());
                 }
         );
+//
+//  ................Faculty...................
+//
+        JFXTextField facultyInput = new JFXTextField();
+        facultyInput.setLabelFloat(false);
+        facultyInput.setMinSize(300, 40);
+        facultyInput.setFont(Font.font(15.0));
+        facultyInput.setPromptText("Enter faculty...");
+
+        Label facultyLabel = new Label("Faculty: ");
+        facultyLabel.setFont(Font.font(18.0));
+        facultyLabel.setLabelFor(facultyInput);
+
+//
+//  ....................Validators.........................
+//
+        RegexValidator validFaculty = new RegexValidator(); // to match special characters and numbers
+        validFaculty.setRegexPattern("^[_A-Za-z- +]+([_A-Za-z- ]+)");
+        validFaculty.setMessage("Numbers and special characters not allowed");
+
+        facultyInput.setValidators(
+                new RequiredFieldValidator("No Input Given"), // when nothing is input
+                validFaculty
+        );
+
+        facultyInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                facultyInput.validate();
+            }
+        });
+
+
+//        To get the text_field input event and validate
+        facultyInput.setOnKeyReleased(keyEvent -> {
+            if (facultyInput.validate())
+                student.setFaculty(facultyInput.getText());
+        });
 
 //
 //  ................Department...................
@@ -311,7 +318,23 @@ public class CreateNewRecord extends Application {
         departmentLabel.setFont(Font.font(18.0));
         departmentLabel.setLabelFor(departmentInput);
 
-        departmentInput.setValidators(new RequiredFieldValidator("No Input Given"));
+//
+//  ....................Validators.........................
+//
+        RegexValidator validDepartment = new RegexValidator(); // to match special characters and numbers
+        validDepartment.setRegexPattern("^[_A-Za-z- +]+([_A-Za-z- ]+)");
+        validDepartment.setMessage("Numbers and special characters not allowed");
+
+        departmentInput.setValidators(
+                new RequiredFieldValidator("No Input Given"), // when nothing is input
+                validDepartment
+        );
+
+        facultyInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                facultyInput.validate();
+            }
+        });
 
         departmentInput.setOnKeyReleased(keyEvent -> {
                     if (departmentInput.validate())
@@ -364,13 +387,13 @@ public class CreateNewRecord extends Application {
 
 //        load user's data to be updated
         if (studentToBeUpdated != null) {
-            firstNameInput.setText(studentToBeUpdated.getFirstName());
-            surnameInput.setText(studentToBeUpdated.getLastName());
+            fullNameInput.setText(studentToBeUpdated.getFullName());
+            facultyInput.setText(studentToBeUpdated.getFaculty());
             matricNumberInput.setText(studentToBeUpdated.getMatricNumber());
             departmentInput.setText(studentToBeUpdated.getDepartment());
             dobPicker.getEditor().setText(studentToBeUpdated.getDateOfBirth());
 
-            if(studentToBeUpdated.getGender().equals("Male")){
+            if (studentToBeUpdated.getGender().equals("Male")) {
                 maleGender.setSelected(true);
                 student.setGender(studentToBeUpdated.getGender());
             } else {
@@ -378,8 +401,8 @@ public class CreateNewRecord extends Application {
                 student.setGender(studentToBeUpdated.getGender());
             }
 
-            student.setFirstName(studentToBeUpdated.getFirstName());
-            student.setLastName(studentToBeUpdated.getLastName());
+            student.setFullName(studentToBeUpdated.getFullName());
+            student.setFaculty(studentToBeUpdated.getFaculty());
             student.setMatricNumber(studentToBeUpdated.getMatricNumber());
             student.setDepartment(studentToBeUpdated.getDepartment());
             student.setDateOfBirth(studentToBeUpdated.getDateOfBirth());
@@ -388,9 +411,9 @@ public class CreateNewRecord extends Application {
 //
 //  ...............Arrange the layouts in rows...................
 //
-        gridPane.addRow(0, fNameLabel, firstNameInput);
-        gridPane.addRow(1, lNameLabel, surnameInput);
-        gridPane.addRow(2, matricLabel, matricNumberInput);
+        gridPane.addRow(0, fNameLabel, fullNameInput);
+        gridPane.addRow(1, matricLabel, matricNumberInput);
+        gridPane.addRow(2, facultyLabel, facultyInput);
         gridPane.addRow(3, departmentLabel, departmentInput);
         gridPane.addRow(4, maleGender, femaleGender);
         gridPane.addRow(5, dobLabel, dobPicker);

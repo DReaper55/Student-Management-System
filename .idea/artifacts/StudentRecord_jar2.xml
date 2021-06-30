@@ -15,9 +15,9 @@
       <element id="extracted-dir" path="C:/Development/javafx-sdk-11.0.2/lib/javafx.fxml.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Development/javafx-sdk-11.0.2/lib/javafx.media.jar" path-in-jar="/" />
       <element id="extracted-dir" path="C:/Development/javafx-sdk-11.0.2/lib/javafx.base.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.12.3/12b7358a7740af71a4a52349d014d526a7a26a65/mongo-java-driver-2.12.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jfoenix-9.0.10.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jfoenix-9.0.10-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mongo-java-driver-2.12.3.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
